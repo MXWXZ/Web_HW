@@ -2,17 +2,11 @@
 
 <head>
     <title>Jiang's Store</title>
-    <link rel="stylesheet" type="text/css" href="css/theme1.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="js/main.js"></script>
 </head>
 
 <body>
-    <div class="top_nav_bg">
-        <div class="top_nav">
-            <div class="top_link">
-                Choose theme: <a class="theme1" href="index.html">Theme1</a> <a class="theme2" href="index_2.html">Theme2</a>
-            </div>
-        </div>
-    </div>
     <div class="header">
         <div class="header_bar">
             <h1>Jiang's Store</h1>
@@ -22,6 +16,9 @@
                     <li><a href="explore.html">Explore</a></li>
                 </ul>
             </div>
+            <div class="header_login">
+                <a href="signup.html"><span style="display: block;">Sign up</span></a>
+            </div>
         </div>
     </div>
     <div class="recom">
@@ -29,7 +26,7 @@
             <div class="title">
                 <h2>
                     <a href="book1.html" target="_blank">
-                        <i>The Man Who Changed China</i>
+                        <i onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">The Man Who Changed China</i>
                     </a>
                 </h2>
                 <p>You should sacrifice 1s for the elder...</p>

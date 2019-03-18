@@ -1,0 +1,60 @@
+body {
+    background: #f4f2ee;
+    font: 14px/20px "Microsoft Yahei", arial, sans-serif;
+    color: #666;
+}
+
+.sign_title h1 {
+    font-size: 30px;
+    text-align: center;
+    margin: 50px auto 0;
+}
+
+.sign_c {
+    width: 320px;
+    margin: 50px auto 0;
+}
+
+.sign {
+    line-height: 44px;
+    font-size: 14px;
+    border: #cbcbcb 1px solid;
+    border-top: 0;
+    border-radius: 2px;
+    background: #fff;
+}
+
+.sign .row {
+    line-height: 44px;
+    height: 44px;
+    padding-left: 12px;
+    border-top: #cbcbcb 1px solid;
+    position: relative;
+}
+
+.sign .inp {
+    width: 200px;
+    height: 44px;
+    font-size: 14px;
+    border: 0;
+    outline: none;
+    background: none;
+    margin: 0 0 0 10px;
+}
+
+.sign_c .btn_o {
+    margin-top: 24px;
+}
+
+.btn_o {
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    cursor: pointer;
+    border: 0;
+    border-radius: 2px;
+    background: #ff7200;
+}
