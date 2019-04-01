@@ -42,10 +42,11 @@ class Header extends Component {
                     <h1>Jiang's Store</h1>
                     <Navbar nav={nav} current={this.props.current} />
                     <div className="header_login">
-                        <Link to="/signup"><span style={{ display: "block" }}>Sign up</span></Link>
+                        <Link to="/signup"><span style={{ float: "right" }}>Sign up</span></Link>
+                        <Link to="/Cart"> <span style={{ float: "right", marginRight: '5px' }}>Cart</span></Link>
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }

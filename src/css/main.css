@@ -153,7 +153,7 @@ h3 {
     width: 930px;
     overflow: hidden;
     background: #fff;
-    padding: 42px 35px 0;
+    padding: 42px 35px 42px;
 }
 
 .show ul li {
@@ -163,12 +163,20 @@ h3 {
     float: left;
 }
 
-.show ul li img {
+.showimg {
     float: left;
     width: 105px;
     height: 160px;
     border: 1px solid #f0f0f0;
     margin-right: 14px;
+}
+
+.showtitle {
+    color: #000
+}
+
+.showtitle:hover {
+    color: #f26552;
 }
 
 .show .bookMation {
