@@ -68,7 +68,6 @@ h3 {
 
 .recom {
     min-width: 1000px;
-    background: url(../img/bg.gif) no-repeat center top;
 }
 
 .recom_wrap {
@@ -90,6 +89,10 @@ h3 {
     text-overflow: ellipsis;
     margin: 0 auto;
     opacity: 0.5;
+}
+
+.recom .title i:hover {
+    color: #f26552;
 }
 
 .recom .title a {
@@ -190,6 +193,10 @@ h3 {
     color: #212121;
 }
 
+.show .bookMation h3 h3:hover {
+    color: #f26552;
+}
+
 .show .bookMation .buy {
     color: #e52222;
     font-size: 22px;
@@ -246,10 +253,6 @@ h3 {
     color: #fff;
     padding-left: 28px;
     text-decoration: none;
-}
-
-s {
-    background: url(../../img/sjicon.png) no-repeat;
 }
 
 .bookInfor .bookL a {

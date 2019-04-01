@@ -8,6 +8,7 @@ body {
     font-size: 30px;
     text-align: center;
     margin: 50px auto 0;
+    float: none;
 }
 
 .sign_c {
