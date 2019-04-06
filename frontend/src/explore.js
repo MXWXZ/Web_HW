@@ -26,17 +26,21 @@ class Explore extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            books: [
-                createData('The Man Who Changed China', 'Robert Lawrence Kuhn', 4800, '‎7-5327-3654-7518', require('./img/book1.jpg'), '/book1'),
-                createData('Nineteen Eighty-Four', 'George Orwell', 1950, '‎9-7875-4471-1647', require('./img/book2.jpg'), '/book2'),
-                createData('No Longer Human', 'Osamu Dazai', 2500, '‎9-7875-0638-0263', require('./img/book3.jpg'), '/book3'),
-            ],
-            booksCp: [
-                createData('The Man Who Changed China', 'Robert Lawrence Kuhn', 4800, '‎7-5327-3654-7518', require('./img/book1.jpg'), '/book1'),
-                createData('Nineteen Eighty-Four', 'George Orwell', 1950, '‎9-7875-4471-1647', require('./img/book2.jpg'), '/book2'),
-                createData('No Longer Human', 'Osamu Dazai', 2500, '‎9-7875-0638-0263', require('./img/book3.jpg'), '/book3'),
-            ]
+            books: [],
+            booksCp: []
         };
+        fetch('/BookInfo')
+            .then(res => res.json())
+            .then(data => {
+                let list = [];
+                list.push(createData(data[0].name, data[0].author, data[0].price, data[0].isbn, require('./img/' + data[0].img), data[0].url));
+                list.push(createData(data[1].name, data[1].author, data[1].price, data[1].isbn, require('./img/' + data[1].img), data[1].url));
+                list.push(createData(data[2].name, data[2].author, data[2].price, data[2].isbn, require('./img/' + data[2].img), data[2].url));
+                this.setState({
+                    books: list,
+                    booksCp: list
+                })
+            });
     }
     handleLink(index) {
         return "/detail/" + index
