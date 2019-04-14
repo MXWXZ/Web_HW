@@ -13,7 +13,7 @@ class Book1 extends Component {
                         <div className="bookL">
                             <s style={{ background: 'url(' + require('./img/sjicon.png') + ') no-repeat' }}>Bio</s>
                             <Link to=''>
-                                <img src={require("./img/book1.jpg")} alt="The Man Who Changed China" />
+                                <img src={require("./img/i1km85x0zbc97cbr.jpg")} alt="The Man Who Changed China" />
                             </Link>
                         </div>
                         <div className="bookR">

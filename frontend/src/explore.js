@@ -11,8 +11,9 @@ import TextField from '@material-ui/core/TextField';
 require('./css/main.css');
 
 let counter = 0;
-function createData(name, author, price, isbn, img, url) {
+function createData(name, author, price, isbn, img) {
     counter += 1;
+    let url = './book' + counter.toString();
     return { id: counter, name, author, price, isbn, img, url };
 }
 let order = {
@@ -29,13 +30,14 @@ class Explore extends Component {
             books: [],
             booksCp: []
         };
+        counter = 0;
         fetch('/BookInfo')
             .then(res => res.json())
             .then(data => {
                 let list = [];
-                list.push(createData(data[0].name, data[0].author, data[0].price, data[0].isbn, require('./img/' + data[0].img), data[0].url));
-                list.push(createData(data[1].name, data[1].author, data[1].price, data[1].isbn, require('./img/' + data[1].img), data[1].url));
-                list.push(createData(data[2].name, data[2].author, data[2].price, data[2].isbn, require('./img/' + data[2].img), data[2].url));
+                list.push(createData(data[0].name, data[0].author, data[0].price, data[0].isbn, require('./img/' + data[0].img)));
+                list.push(createData(data[1].name, data[1].author, data[1].price, data[1].isbn, require('./img/' + data[1].img)));
+                list.push(createData(data[2].name, data[2].author, data[2].price, data[2].isbn, require('./img/' + data[2].img)));
                 this.setState({
                     books: list,
                     booksCp: list

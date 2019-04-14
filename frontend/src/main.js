@@ -24,7 +24,7 @@ class Main extends Component {
                                 <ul>
                                     <li>
                                         <Link to="/book1" target="_blank">
-                                            <img src={require('./img/book1.jpg')} alt="The Man Who Changed China" />
+                                            <img src={require('./img/i1km85x0zbc97cbr.jpg')} alt="The Man Who Changed China" />
                                         </Link>
                                     </li>
                                 </ul>
