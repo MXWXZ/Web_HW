@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "antd": "^3.16.1",
+        "antd": "^3.16.3",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "react-router-dom": "^5.0.0",
@@ -28,5 +28,6 @@
         "@babel/preset-react": "^7.0.0",
         "babel-core": "^6.26.3",
         "babel-plugin-import": "^1.11.0"
-    }
+    },
+    "proxy": "http://localhost:8082"
 }

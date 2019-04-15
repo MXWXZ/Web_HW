@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Col, Row, Menu, Button } from 'antd';
+import { Col, Row, Menu } from 'antd';
 import Sign from './Sign'
 
 /*
@@ -12,19 +12,19 @@ class Header extends Component {
     render() {
         const item = [];
         this.props.nav.forEach((nav, index) => {
-            item.push(<Menu.Item key={index}>{nav.name}</Menu.Item>)
+            item.push(<Menu.Item key={index}><Link to={nav.url}>{nav.name}</Link></Menu.Item>)
         });
         return (
-            <header id="header">
+            <header id='header'>
                 <Row>
-                    <Col span={16} offset={4}>
+                    <Col span={18} offset={3}>
                         <Col span={6}>
-                            <Link className="logo" to="/">
-                                <img alt="logo" className="logo" src={require('../img/logo.png')} />
+                            <Link className='logo' to='/'>
+                                <img alt='logo' className='logo' src={require('../img/logo.png')} />
                             </Link>
                         </Col>
                         <Col span={12}>
-                            <Menu mode="horizontal" style={{ borderBottom: "none" }} defaultSelectedKeys={this.props.default ? [this.props.default] : ['']}>
+                            <Menu mode='horizontal' style={{ borderBottom: 'none' }} defaultSelectedKeys={typeof this.props.default !== "undefined" ? [this.props.default] : ['']}>
                                 {item}
                             </Menu>
                         </Col>
