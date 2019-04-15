@@ -1,16 +1,36 @@
 public class BookObj {
+    private int key;
     private String name;
     private String author;
     private int price;
     private String isbn;
+    private int amount;
     private String img;
 
-    public BookObj(String name, String author, int price, String isbn, String img) {
+    public BookObj(int key, String name, String author, int price, String isbn, int amount, String img) {
+        this.key = key;
         this.name = name;
         this.author = author;
         this.price = price;
         this.isbn = isbn;
+        this.amount = amount;
         this.img = img;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
     }
 
     public String getName() {

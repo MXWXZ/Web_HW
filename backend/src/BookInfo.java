@@ -32,10 +32,12 @@ public class BookInfo extends HttpServlet {
             List<BookObj> obj = new ArrayList<BookObj>();
             while (res.next()) {
                 obj.add(new BookObj(
+                        res.getInt("book_id"),
                         res.getString("book_name"),
                         res.getString("book_author"),
                         res.getInt("book_price"),
                         res.getString("book_isbn"),
+                        res.getInt("book_amount"),
                         res.getString("book_img")));
             }
             books = JSON.toJSONString(obj);

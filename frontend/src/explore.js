@@ -1,134 +1,85 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Header from './component/Header';
-import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TextField from '@material-ui/core/TextField';
-require('./css/main.css');
+import { Table, Input, Row } from 'antd'
 
-let counter = 0;
-function createData(name, author, price, isbn, img) {
-    counter += 1;
-    let url = './book' + counter.toString();
-    return { id: counter, name, author, price, isbn, img, url };
-}
-let order = {
-    name: true,
-    author: true,
-    price: true,
-    isbn: true
-}
-let orderBy = 'name'
+const columns = [{
+    title: 'Image',
+    dataIndex: 'img',
+    align: 'center',
+    width: 150,
+    render: img => (
+        <img className='book-img' src={'/img/' + img} alt={img} />
+    )
+}, {
+    title: 'Name',
+    dataIndex: 'name',
+    align: 'center',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    render: (text, record) => (<Link className='book-title' to={'/book/' + record.key.toString()}>{text}</Link>)
+}, {
+    title: 'Author',
+    dataIndex: 'author',
+    align: 'center',
+    sorter: (a, b) => a.author.localeCompare(b.author),
+}, {
+    title: 'ISBN',
+    dataIndex: 'isbn',
+    align: 'center',
+    sorter: (a, b) => a.isbn.localeCompare(b.isbn),
+}, {
+    title: 'Amount',
+    dataIndex: 'amount',
+    align: 'center',
+    sorter: (a, b) => a.amount - b.amount,
+}, {
+    title: 'Price',
+    dataIndex: 'price',
+    align: 'center',
+    sorter: (a, b) => a.price - b.price,
+    render: price => ((price / 100).toFixed(2))
+}];
+
+const Search = Input.Search;
+
 class Explore extends Component {
+    state = {
+        book: [],
+        bookSave: []
+    }
+
     constructor(props) {
         super(props);
-        this.state = {
-            books: [],
-            booksCp: []
-        };
-        counter = 0;
+
+        this.handleChange = this.handleChange.bind(this);
         fetch('/BookInfo')
             .then(res => res.json())
             .then(data => {
-                let list = [];
-                list.push(createData(data[0].name, data[0].author, data[0].price, data[0].isbn, require('./img/' + data[0].img)));
-                list.push(createData(data[1].name, data[1].author, data[1].price, data[1].isbn, require('./img/' + data[1].img)));
-                list.push(createData(data[2].name, data[2].author, data[2].price, data[2].isbn, require('./img/' + data[2].img)));
                 this.setState({
-                    books: list,
-                    booksCp: list
+                    book: data,
+                    bookSave: data
                 })
             });
     }
-    handleLink(index) {
-        return "/detail/" + index
-    }
-    handleSort(index) {
-        orderBy = index
-        order[index] = !order[index]
-        let list = []
-        for (let i = 0; i < this.state.books.length; i++) {
-            list.push(this.state.books[i])
-        }
-        list.sort(this.sort)
-        this.setState({
-            books: list
-        })
-    }
-    sort(a, b) {
-        let res = 0;
-        if (a[orderBy] < b[orderBy]) {
-            res = -1
-        } else if (a[orderBy] > b[orderBy]) {
-            res = 1
-        } else {
-            res = 0
-        }
-        if (!order[orderBy]) {
-            res = 0 - res
-        }
-        return res
-    }
+
     handleChange() {
-        let pattern = document.getElementById('filter').value
-        let list = this.state.booksCp.filter((item) => {
-            return item.name.indexOf(pattern) !== -1
+        let pattern = document.getElementById('search').value;
+        let list = this.state.bookSave.filter((item) => {
+            return item.name.indexOf(pattern) !== -1;
         })
         this.setState({
-            books: list
+            book: list
         })
     }
+
     render() {
         return (
             <div>
-                <Header current='1' />
-                <div className="content">
-                    <div className="show">
-                        <TextField style={{ marginBottom: '20px' }} label="Search" id={'filter'} onChange={() => this.handleChange()} />
-                        <Table className="table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center">
-                                        <Button>Image</Button>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        <Button onClick={() => { this.handleSort("name") }}>Name</Button>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        <Button onClick={() => { this.handleSort("author") }}>Author</Button>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        <Button onClick={() => { this.handleSort("price") }}>Price</Button>
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {this.state.books.map((item, index) => {
-                                    return (
-                                        <TableRow key={index} >
-                                            <TableCell component="th" scope="row" >
-                                                <img className='showimg' src={item.img} alt={item.name} />
-                                            </TableCell>
-                                            <TableCell align="center">
-                                                <Link to={item.url} target="_blank" className="showtitle">{item.name}</Link>
-                                            </TableCell>
-                                            <TableCell align="center">
-                                                {item.author}
-                                            </TableCell>
-                                            <TableCell align="center">
-                                                {item.price / 100}
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                })}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </div>
+                <Row style={{ paddingBottom: '20px' }}>
+                    <Search id='search' placeholder='search book' onChange={this.handleChange} style={{ width: 300 }} />
+                </Row>
+                <Row>
+                    <Table bordered={true} columns={columns} dataSource={this.state.book} />
+                </Row>
             </div>
         );
     }
