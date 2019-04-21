@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import BookView from './components/BookView';
 
-class Explore extends Component {
+class BookManager extends Component {
     render() {
         return (
-            <BookView />
+            <BookView showAction />
         );
     }
 }
 
-export default Explore;
+export default BookManager;

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Row, Menu } from 'antd';
-import Sign from './Sign'
+import Cookies from 'universal-cookie';
+import SignBar from './Sign';
+import AvatarBar from './Avatar';
+
+const cookies = new Cookies();
 
 /*
     Header
@@ -9,6 +13,14 @@ import Sign from './Sign'
     @param  default: default select
 */
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userId: cookies.get('userId'),
+            userName: cookies.get('userName'),
+            userPermission: cookies.get('userPermission'),
+        };
+    }
     render() {
         const item = [];
         this.props.nav.forEach((nav, index) => {
@@ -29,7 +41,7 @@ class Header extends Component {
                             </Menu>
                         </Col>
                         <Col span={6}>
-                            <Sign />
+                            {this.state.userId ? <AvatarBar userName={this.state.userName} userPermission={this.state.userPermission} /> : <SignBar />}
                         </Col>
                     </Col>
                 </Row>
