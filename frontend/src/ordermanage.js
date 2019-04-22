@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Tag, Button, Row, Table } from 'antd';
+import { Tag, Row, Table } from 'antd';
 import axios from 'axios';
 
 const columns = [
     {
-        title: 'ID',
+        title: 'Order ID',
         dataIndex: 'orderId',
         align: 'center',
         sorter: (a, b) => a.orderId - b.orderId,
@@ -23,18 +23,36 @@ const columns = [
             let text = '';
             switch (orderStatus) {
                 case 0:
+                    color = 'orange';
+                    text = 'Nopay';
+                    break;
+                case 1:
+                    color = 'gold';
+                    text = 'Payed';
+                    break;
+                case 2:
+                    color = 'blue';
+                    text = 'Delivering';
+                    break;
+                case 3:
+                    color = 'purple';
+                    text = 'Reached';
+                    break;
+                case 4:
+                    color = 'green';
+                    text = 'Accepted';
+                    break;
+                case 5:
+                    color = 'red';
+                    text = 'Canceled';
+                    break;
+                default:
+                    color = null;
+                    text = 'Unknown';
                     break;
             }
             return <Tag color={color}>{text}</Tag>
         }
-    }, {
-        title: 'Action',
-        align: 'center',
-        render: (text, record) => (
-            <span>
-                <Button size='small' type={record.userStatus === 1 ? null : 'danger'}>{record.userStatus === 1 ? 'Unfreeze' : 'Freeze'}</Button>
-            </span>
-        )
     }
 ];
 
@@ -47,11 +65,11 @@ class OrderManage extends Component {
     constructor(props) {
         super(props);
 
-        axios.get(`/api/allusers`)
+        axios.get(`/api/orders`)
             .then(res => {
                 this.setState({
-                    user: res.data.data,
-                    userSave: res.data.data
+                    order: res.data.data,
+                    orderSave: res.data.data
                 })
             });
     }
@@ -59,7 +77,7 @@ class OrderManage extends Component {
     render() {
         return (
             <Row>
-                <Table rowKey={record => record.userId} bordered={true} columns={columns} dataSource={this.state.user} />
+                <Table rowKey={record => record.orderId} bordered={true} columns={columns} dataSource={this.state.order} />
             </Row>
         );
     }

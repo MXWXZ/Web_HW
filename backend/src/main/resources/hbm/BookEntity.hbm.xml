@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.imwxz.store.entity">
 
-    <class name="com.imwxz.store.entity.BookEntity" table="book" schema="store">
+    <class name="BookEntity" table="book" schema="store">
         <id name="bookId">
             <column name="book_id" sql-type="int(11)"/>
+            <generator class="increment"/>
         </id>
         <property name="bookName">
             <column name="book_name" sql-type="varchar(256)" length="256"/>
@@ -29,5 +30,11 @@
         <property name="bookDetail">
             <column name="book_detail" sql-type="varchar(1024)" length="1024" not-null="true"/>
         </property>
+        <set name="orderItemsByBookId" inverse="true">
+            <key>
+                <column name="book_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.imwxz.store.entity.OrderItemEntity"/>
+        </set>
     </class>
 </hibernate-mapping>

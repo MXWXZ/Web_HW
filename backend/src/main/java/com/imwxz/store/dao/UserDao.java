@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,8 +42,18 @@ public class UserDao {
 
     @SuppressWarnings("unchecked")
     public List<UserEntity> getAllUser() {
-        Session session = HibernateUtil.openSession();
-        return session.createQuery("from UserEntity").list();
+        Transaction tx = null;
+        try (Session session = HibernateUtil.openSession()) {
+            tx = session.beginTransaction();
+            List<UserEntity> ret = session.createQuery("from UserEntity").list();
+            tx.commit();
+            session.close();
+            return ret;
+        } catch (Exception e) {
+            if (tx != null)
+                tx.rollback();
+            return new ArrayList<UserEntity>();
+        }
     }
 
     public List<UserEntity> getUserById(int userId) {

@@ -17,8 +17,8 @@ function handleMenuClick(e) {
 
 const userMenu = (
     <Menu onClick={handleMenuClick}>
-        <Menu.Item key='1'>Order</Menu.Item>
-        <Menu.Item key='2'>Statistics</Menu.Item>
+        <Menu.Item key='1'><Link to='/order'>Order</Link></Menu.Item>
+        <Menu.Item key='2'><Link to='/stat'>Statistics</Link></Menu.Item>
         <Menu.Item key='0' >Logout</Menu.Item>
     </Menu>
 );
@@ -27,8 +27,8 @@ const adminMenu = (
     <Menu onClick={handleMenuClick}>
         <Menu.Item key='1'><Link to='/usermanage'>User Manage</Link></Menu.Item>
         <Menu.Item key='2'><Link to='/bookmanage'>Book Manage</Link></Menu.Item>
-        <Menu.Item key='3'>Order Manage</Menu.Item>
-        <Menu.Item key='4'>Statistics</Menu.Item>
+        <Menu.Item key='3'><Link to='/ordermanage'>Order Manage</Link></Menu.Item>
+        <Menu.Item key='4'><Link to='/statmanage'>Statistics Manage</Link></Menu.Item>
         <Menu.Item key='0'>Logout</Menu.Item>
     </Menu>
 );
@@ -41,12 +41,18 @@ const adminMenu = (
 class AvatarBar extends Component {
     render() {
         return (
-            <Dropdown overlay={this.props.userPermission === '0' ? userMenu : adminMenu} trigger={['click']}>
-                <Button className='nav-button' icon='user' style={{ float: 'right' }}>
-                    {this.props.userName}
-                    <Icon type='down' />
-                </Button>
-            </Dropdown >
+            <div>
+                <Dropdown overlay={this.props.userPermission === '0' ? userMenu : adminMenu} trigger={['click']}>
+                    <Button className='nav-button' icon='user'>
+                        {this.props.userName}
+                        <Icon type='down' />
+                    </Button>
+                </Dropdown>
+                <Link to='/cart'>
+                    <Button className='nav-button' type="primary" shape="circle" icon="shopping-cart"
+                        style={{ display: this.props.userPermission === '1' ? 'none' : 'inline-block' }} />
+                </Link>
+            </div>
         );
     }
 }

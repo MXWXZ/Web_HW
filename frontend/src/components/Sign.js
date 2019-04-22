@@ -240,8 +240,8 @@ class SignBar extends Component {
     render() {
         return (
             <div style={{ float: 'right' }}>
-                <SignModal type='dashed' text='Sign in' form={WrappedSigninForm} />
                 <SignModal type='primary' text='Sign up' form={WrappedSignupForm} />
+                <SignModal type='dashed' text='Sign in' form={WrappedSigninForm} />
             </div>
         );
     }

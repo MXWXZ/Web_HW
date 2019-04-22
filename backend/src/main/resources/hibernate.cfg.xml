@@ -13,13 +13,13 @@
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MariaDB53Dialect</property>
 
-        <property name="show_sql">false</property>
+        <property name="show_sql">true</property>
 
         <!-- DB schema will be updated if needed -->
         <property name="hbm2ddl.auto">update</property>
-        <mapping class="com.imwxz.store.entity.BookEntity"/>
-        <mapping class="com.imwxz.store.entity.OrderEntity"/>
-        <mapping class="com.imwxz.store.entity.OrderItemEntity"/>
-        <mapping class="com.imwxz.store.entity.UserEntity"/>
+        <mapping resource="hbm/BookEntity.hbm.xml"/>
+        <mapping resource="hbm/OrderEntity.hbm.xml"/>
+        <mapping resource="hbm/OrderItemEntity.hbm.xml"/>
+        <mapping resource="hbm/UserEntity.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

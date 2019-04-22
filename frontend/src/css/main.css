@@ -16,6 +16,7 @@
 .nav-button {
     margin-top: 7px;
     margin-left: 12px;
+    float: right;
 }
 
 .ant-modal-footer {

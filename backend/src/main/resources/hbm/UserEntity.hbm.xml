@@ -2,11 +2,12 @@
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
+<hibernate-mapping package="com.imwxz.store.entity">
 
-    <class name="com.imwxz.store.entity.UserEntity" table="user" schema="store">
+    <class name="UserEntity" table="user" schema="store">
         <id name="userId">
             <column name="user_id" sql-type="int(11)"/>
+            <generator class="increment"/>
         </id>
         <property name="userName">
             <column name="user_name" sql-type="varchar(32)" length="32"/>
@@ -23,5 +24,11 @@
         <property name="userPermission">
             <column name="user_permission" sql-type="int(11)"/>
         </property>
+        <set name="ordersByUserId" inverse="true">
+            <key>
+                <column name="user_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.imwxz.store.entity.OrderEntity"/>
+        </set>
     </class>
 </hibernate-mapping>

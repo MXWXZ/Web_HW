@@ -6,6 +6,11 @@ import Home from './home';
 import Explore from './explore';
 import UserManage from './usermanage';
 import BookManage from './bookmanage';
+import OrderManage from './ordermanage';
+import StatManage from './statmanage';
+import Cart from './cart';
+import Stat from './stat';
+import Order from './order';
 import 'antd/dist/antd.css';
 require('./css/main.css');
 
@@ -15,6 +20,11 @@ const StoreRouter = (
         <Route exact path='/explore' render={(props) => <Main {...props} content={Explore} default={'1'} />} />
         <Route exact path='/usermanage' render={(props) => <Main {...props} content={UserManage} />} />
         <Route exact path='/bookmanage' render={(props) => <Main {...props} content={BookManage} />} />
+        <Route exact path='/ordermanage' render={(props) => <Main {...props} content={OrderManage} />} />
+        <Route exact path='/statmanage' render={(props) => <Main {...props} content={StatManage} />} />
+        <Route exact path='/stat' render={(props) => <Main {...props} content={Stat} />} />
+        <Route exact path='/cart' render={(props) => <Main {...props} content={Cart} />} />
+        <Route exact path='/order' render={(props) => <Main {...props} content={Order} />} />
     </Router>
 );
 
