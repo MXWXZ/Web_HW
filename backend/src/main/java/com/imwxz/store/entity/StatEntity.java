@@ -1,27 +1,25 @@
 package com.imwxz.store.entity;
 
-import java.sql.Timestamp;
-
 public class StatEntity {
     private int totOrders;
     private int totBooks;
     private int totMoney;
-    private Timestamp minTime;
-    private Timestamp maxTime;
+    private int minTime;
+    private int maxTime;
 
-    public Timestamp getMinTime() {
+    public int getMinTime() {
         return minTime;
     }
 
-    public void setMinTime(Timestamp minTime) {
+    public void setMinTime(int minTime) {
         this.minTime = minTime;
     }
 
-    public Timestamp getMaxTime() {
+    public int getMaxTime() {
         return maxTime;
     }
 
-    public void setMaxTime(Timestamp maxTime) {
+    public void setMaxTime(int maxTime) {
         this.maxTime = maxTime;
     }
 

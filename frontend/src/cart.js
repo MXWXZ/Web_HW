@@ -13,6 +13,7 @@ class Cart extends Component {
     state = {
         selectedRowKeys: [],
         book: [],
+        bookbak: [],
         totPrice: 0
     }
 
@@ -21,6 +22,7 @@ class Cart extends Component {
         this.onBlurAmount = this.onBlurAmount.bind(this);
         this.onDeleteItem = this.onDeleteItem.bind(this);
         this.onBuy = this.onBuy.bind(this);
+        this.updateTotal = this.updateTotal.bind(this);
     }
 
     componentDidMount() {
@@ -39,12 +41,14 @@ class Cart extends Component {
     onBlurAmount(e) {
         const target = e.target;
         let newbook = this.state.book;
-        newbook[target.name]['cartAmount'] = target.value;
-        this.setState({ book: newbook });
+        newbook[target.name].cartAmount = target.value;
+        this.setState((prevState, props) => {
+            return { book: newbook }
+        });
 
         axios.post(`/api/cart`, Qs.stringify({
             userId: cookies.get('userId'),
-            bookId: newbook[target.name]['bookId'],
+            bookId: newbook[target.name].bookId,
             cartAmount: target.value
         }))
             .then(res => {
@@ -54,6 +58,7 @@ class Cart extends Component {
                     message.success("Change cart item successfully!");
                 }
             });
+        this.updateTotal();
     }
 
     onDeleteItem(e) {
@@ -61,7 +66,7 @@ class Cart extends Component {
         axios.delete(`/api/cart`, {
             params: {
                 userId: cookies.get('userId'),
-                bookId: this.state.book[target.name]['bookId'],
+                bookId: this.state.book[target.name].bookId,
             }
         })
             .then(res => {
@@ -73,8 +78,21 @@ class Cart extends Component {
             });
 
         let newbook = this.state.book;
+        let selected = this.state.selectedRowKeys;
+        let del = -1;
+        for (var i = 0; i < selected.length; ++i)
+            if (selected[i] === parseInt(target.name))
+                del = i;
+            else if (selected[i] > parseInt(target.name))
+                selected[i] -= 1;
+
         newbook.splice(target.name, 1);
-        this.setState({ book: newbook });
+        selected.splice(del, 1);
+        this.setState({
+            book: newbook,
+            selectedRowKeys: selected,
+        }, () => { this.updateTotal(); });
+
     }
 
     onBuy(e) {
@@ -82,8 +100,8 @@ class Cart extends Component {
         let booklist = [];
         this.state.selectedRowKeys.forEach(item => {
             const tmp = this.state.book[item];
-            booklist.push(tmp['cartId']);
-            tot += tmp['bookPrice'] / 100 * tmp['cartAmount'];
+            booklist.push(tmp.cartId);
+            tot += tmp.bookPrice / 100 * tmp.cartAmount;
         });
         confirm({
             title: 'Do you want to pay now?',
@@ -107,15 +125,19 @@ class Cart extends Component {
         });
     }
 
-    onSelectChange = (selectedRowKeys) => {
-        let tot = 0;
-        selectedRowKeys.forEach(item => {
-            const tmp = this.state.book[item];
-            tot += tmp['bookPrice'] / 100 * tmp['cartAmount'];
-        });
-
+    onSelectChange = (selectedRowKeys, selectedRows) => {
         this.setState({
-            selectedRowKeys,
+            selectedRowKeys: selectedRowKeys
+        }, () => { this.updateTotal(); });
+    }
+
+    updateTotal() {
+        let tot = 0;
+        this.state.selectedRowKeys.forEach(item => {
+            const tmp = this.state.book[item];
+            tot += tmp.bookPrice / 100 * tmp.cartAmount;
+        });
+        this.setState({
             totPrice: tot
         });
     }
@@ -141,13 +163,13 @@ class Cart extends Component {
                 dataIndex: 'bookPrice',
                 align: 'center',
                 sorter: (a, b) => a.bookPrice - b.bookPrice,
-                render: (text, record) => ((text / 100).toFixed(2))
+                render: text => ((text / 100).toFixed(2))
             }, {
                 title: 'Amount',
                 dataIndex: 'cartAmount',
                 align: 'center',
                 sorter: (a, b) => a.bookAmount - b.bookAmount,
-                render: (text, record) => (<InputNumber name={record.key} min={1} max={record.bookAmount} defaultValue={text} onBlur={this.onBlurAmount} />)
+                render: (text, record, index) => (<InputNumber name={index} min={1} max={record.bookAmount} defaultValue={text} onBlur={this.onBlurAmount} />)
             }, {
                 title: 'Total',
                 dataIndex: 'totalPrice',
@@ -157,7 +179,7 @@ class Cart extends Component {
             }, {
                 title: 'Action',
                 align: 'center',
-                render: (text, record) => (<Button name={record.key} size='small' type='danger' onClick={this.onDeleteItem}>delete</Button>)
+                render: (text, record, index) => (<Button name={index} size='small' type='danger' onClick={this.onDeleteItem}>delete</Button>)
             }
         ];
 
@@ -172,7 +194,7 @@ class Cart extends Component {
                     onClick={this.onBuy} disabled={this.state.selectedRowKeys.length === 0 ? true : false}>Buy</Button>
                 <Text className='cart-price' style={{ float: 'right' }}>Total: &yen; {this.state.totPrice.toFixed(2)}</Text>
                 <div className='clear' />
-                <Table rowSelection={rowSelection} rowKey={record => record.key} bordered={true} columns={columns} dataSource={this.state.book} style={{ marginTop: '10px' }}
+                <Table rowSelection={rowSelection} rowKey={(record, index) => index} bordered={true} columns={columns} dataSource={this.state.book} style={{ marginTop: '10px' }}
                     pagination={false} />
             </div>
         );

@@ -18,16 +18,15 @@ public class CartDao {
                 "c.bookByBookId.bookName,c.bookByBookId.bookImg,c.bookByBookId.bookAmount," +
                 "c.bookByBookId.bookPrice,cartAmount from CartEntity c").list();
         List ret = new ArrayList();
-        for (int i = 0; i < res.size(); ++i) {
+        for (Object[] i : res) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("key", i);
-            map.put("cartId", res.get(i)[0]);
-            map.put("bookId", res.get(i)[1]);
-            map.put("bookName", res.get(i)[2]);
-            map.put("bookImg", res.get(i)[3]);
-            map.put("bookAmount", res.get(i)[4]);
-            map.put("bookPrice", res.get(i)[5]);
-            map.put("cartAmount", res.get(i)[6]);
+            map.put("cartId", i[0]);
+            map.put("bookId", i[1]);
+            map.put("bookName", i[2]);
+            map.put("bookImg", i[3]);
+            map.put("bookAmount", i[4]);
+            map.put("bookPrice", i[5]);
+            map.put("cartAmount", i[6]);
             ret.add(map);
         }
         session.close();
