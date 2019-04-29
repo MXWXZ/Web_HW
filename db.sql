@@ -86,6 +86,7 @@ CREATE TABLE `order` (
   `user_id` int(11) NOT NULL,
   `order_status` int(11) NOT NULL COMMENT '0 not pay; 1 payed; 2 delivering; 3 reached; 4 accepted; 5 canceled',
   `order_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `order_price` int(11) NOT NULL COMMENT 'just for efficiency',
   PRIMARY KEY (`order_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)

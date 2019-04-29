@@ -17,12 +17,14 @@ class BookDetail extends Component {
         bookIsbn: '',
         bookAmount: 0,
         bookImg: '',
-        bookDetail: ''
+        bookDetail: '',
+        buyAmount: 1,
     }
 
     constructor(props) {
         super(props);
         this.addCart = this.addCart.bind(this);
+        this.onAmountChange = this.onAmountChange.bind(this);
     }
 
     componentDidMount() {
@@ -51,7 +53,7 @@ class BookDetail extends Component {
         if (!cookies.get('userId')) {
             document.getElementById('signin').click();
         } else {
-            let amount = document.getElementById('amount').value;
+            let amount = this.state.buyAmount;
             axios.put(`/api/cart`, Qs.stringify({
                 userId: cookies.get('userId'),
                 bookId: this.state.bookId,
@@ -64,6 +66,11 @@ class BookDetail extends Component {
                 }
             });
         }
+    }
+
+    onAmountChange(value) {
+        let num = parseInt(value);
+        this.setState({ buyAmount: isNaN(num) ? 1 : num })
     }
 
     render() {
@@ -88,11 +95,11 @@ class BookDetail extends Component {
                     </div>
                     <div style={{ height: '170px' }}>
                         <Row style={{ paddingTop: '10px' }}>
-                            <Text className='book-price'>&yen; {(this.state.bookPrice / 100).toFixed(2)}</Text>
+                            <Text className='book-price'>&yen; {(this.state.bookPrice / 100 * this.state.buyAmount).toFixed(2)}</Text>
                         </Row>
                         <Row style={{ marginTop: '10px' }}>
                             <Text style={{ marginRight: '10px' }}>Amount: </Text>
-                            <InputNumber id='amount' min={1} max={this.state.bookAmount} defaultValue={1} />
+                            <InputNumber id='amount' min={1} max={this.state.bookAmount} defaultValue={1} onChange={this.onAmountChange} />
                             <Text style={{ marginLeft: '20px' }}>Stock: {this.state.bookAmount}</Text>
                         </Row>
                         <Row style={{ marginTop: '20px' }}>

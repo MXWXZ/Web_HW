@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import OrderView from './components/OrderView';
 
 class Order extends Component {
     render() {
         return (
-            <h1 style={{ textAlign: 'center' }}>Order</h1>
+            <OrderView />
         );
     }
 }

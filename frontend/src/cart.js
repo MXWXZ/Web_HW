@@ -169,7 +169,7 @@ class Cart extends Component {
         return (
             <div>
                 <Button type='primary' size='large' style={{ float: 'right', width: '100px', marginLeft: '20px' }}
-                    onClick={this.onBuy} disabled={this.state.book.length === 0 ? true : false}>Buy</Button>
+                    onClick={this.onBuy} disabled={this.state.selectedRowKeys.length === 0 ? true : false}>Buy</Button>
                 <Text className='cart-price' style={{ float: 'right' }}>Total: &yen; {this.state.totPrice.toFixed(2)}</Text>
                 <div className='clear' />
                 <Table rowSelection={rowSelection} rowKey={record => record.key} bordered={true} columns={columns} dataSource={this.state.book} style={{ marginTop: '10px' }}

@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.imwxz.store.entity">
 
-    <class name="OrderEntity" table="`order`" schema="store">
+    <class name="OrderEntity" table="`order`" schema="store" dynamic-insert="true">
         <id name="orderId">
             <column name="order_id" sql-type="int(11)"/>
             <generator class="increment"/>
@@ -17,6 +17,9 @@
         </property>
         <property name="orderTime">
             <column name="order_time" sql-type="datetime"/>
+        </property>
+        <property name="orderPrice">
+            <column name="order_price" sql-type="int(11)"/>
         </property>
         <many-to-one name="userByUserId" class="com.imwxz.store.entity.UserEntity" insert="false" update="false">
             <column name="user_id"/>

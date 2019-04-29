@@ -14,6 +14,15 @@ public class OrderEntity {
     @JsonIgnore
     private Set<OrderItemEntity> orderItemsByOrderId;
     private Timestamp orderTime;
+    private int orderPrice;
+
+    public int getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(int orderPrice) {
+        this.orderPrice = orderPrice;
+    }
 
     public Timestamp getOrderTime() {
         return orderTime;
