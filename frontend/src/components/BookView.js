@@ -15,6 +15,9 @@ class BookView extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount() {
         axios.get(`/api/books`)
             .then(res => {
                 this.setState({

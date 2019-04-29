@@ -21,5 +21,6 @@
         <mapping resource="hbm/OrderEntity.hbm.xml"/>
         <mapping resource="hbm/OrderItemEntity.hbm.xml"/>
         <mapping resource="hbm/UserEntity.hbm.xml"/>
+        <mapping resource="hbm/CartEntity.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -2,6 +2,7 @@ package com.imwxz.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.sql.Timestamp;
 import java.util.Set;
 
 public class OrderEntity {
@@ -12,6 +13,15 @@ public class OrderEntity {
     private UserEntity userByUserId;
     @JsonIgnore
     private Set<OrderItemEntity> orderItemsByOrderId;
+    private Timestamp orderTime;
+
+    public Timestamp getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(Timestamp orderTime) {
+        this.orderTime = orderTime;
+    }
 
     public int getUserId() {
         return userId;

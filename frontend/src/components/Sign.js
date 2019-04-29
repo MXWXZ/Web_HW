@@ -102,7 +102,11 @@ class Signup extends Component {
 
     validateEmail = (rule, value, callback) => {
         if (value) {
-            axios.get(`/api/users?userEmail=${value}`)
+            axios.get(`/api/users`, {
+                params: {
+                    userEmail: value
+                }
+            })
                 .then(res => {
                     if (res.data.length === 1)
                         callback('Email already exists!');
@@ -204,6 +208,7 @@ class Signup extends Component {
 
 /*
     Show modal
+    @param  id: button id
     @param  type: button type
     @param  text: button text
     @param  form: modal form
@@ -224,7 +229,7 @@ class SignModal extends Component {
     render() {
         return (
             <div style={{ display: 'inline' }}>
-                <Button className='nav-button' type={this.props.type} onClick={this.showModal}>{this.props.text}</Button>
+                <Button id={typeof this.props.id !== "undefined" ? this.props.id : null} className='nav-button' type={this.props.type} onClick={this.showModal}>{this.props.text}</Button>
                 <Modal visible={this.state.visible} title={this.props.text} onCancel={this.handleCancel} className='sign-modal' footer={null}>
                     {<this.props.form />}
                 </Modal>
@@ -241,7 +246,7 @@ class SignBar extends Component {
         return (
             <div style={{ float: 'right' }}>
                 <SignModal type='primary' text='Sign up' form={WrappedSignupForm} />
-                <SignModal type='dashed' text='Sign in' form={WrappedSigninForm} />
+                <SignModal id='signin' type='dashed' text='Sign in' form={WrappedSigninForm} />
             </div>
         );
     }

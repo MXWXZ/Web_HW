@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Col, Row, Menu } from 'antd';
+import { Col, Row, Menu } from 'antd';
 import Cookies from 'universal-cookie';
 import SignBar from './Sign';
 import AvatarBar from './Avatar';

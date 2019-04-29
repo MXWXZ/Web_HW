@@ -11,6 +11,7 @@ import StatManage from './statmanage';
 import Cart from './cart';
 import Stat from './stat';
 import Order from './order';
+import BookDetail from './bookdetail';
 import 'antd/dist/antd.css';
 require('./css/main.css');
 
@@ -25,6 +26,7 @@ const StoreRouter = (
         <Route exact path='/stat' render={(props) => <Main {...props} content={Stat} />} />
         <Route exact path='/cart' render={(props) => <Main {...props} content={Cart} />} />
         <Route exact path='/order' render={(props) => <Main {...props} content={Order} />} />
+        <Route exact path='/book/:bookId' render={(props) => <Main {...props} content={BookDetail} />} />
     </Router>
 );
 

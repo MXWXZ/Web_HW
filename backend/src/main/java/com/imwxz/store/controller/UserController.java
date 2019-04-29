@@ -22,12 +22,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
-    public List<UserEntity> getUser(@RequestParam(value = "userId", defaultValue = "") String userId,
+    public List<UserEntity> getUser(@RequestParam(value = "userId", required = false) Integer userId,
                                     @RequestParam(value = "userName", defaultValue = "") String userName,
                                     @RequestParam(value = "userEmail", defaultValue = "") String userEmail) {
         UserDao user = new UserDao();
-        if (!userId.isEmpty())
-            return user.getUserById(Integer.valueOf(userId));
+        if (userId != null)
+            return user.getUserById(userId);
         else if (!userName.isEmpty())
             return user.getUserByName(userName);
         else if (!userEmail.isEmpty())
@@ -47,9 +47,11 @@ public class UserController {
         if (userPassword.length() < 6)
             return new MessageEntity(3, "Password is too short!");
 
-        if (user.signUp(userEmail, userName, userPassword) > 0)
-            return new MessageEntity();
+        MessageEntity ret = new MessageEntity();
+        ret.setCode(user.signUp(userEmail, userName, userPassword));
+        if (ret.getCode() == -1)
+            ret.setMsg("Unknown error!");
 
-        return new MessageEntity(-1, "Unknown error!");
+        return ret;
     }
 }

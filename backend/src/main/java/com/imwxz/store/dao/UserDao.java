@@ -4,7 +4,6 @@ import com.imwxz.store.entity.UserEntity;
 import com.imwxz.store.util.HashUtil;
 import com.imwxz.store.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
@@ -22,36 +21,36 @@ public class UserDao {
     }
 
     public int signUp(String userEmail, String userName, String userPassword) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.openSession()) {
-            tx = session.beginTransaction();
+        Session session = HibernateUtil.openSession();
+        try {
+            session.beginTransaction();
             UserEntity user = new UserEntity();
             user.setUserEmail(userEmail);
             user.setUserName(userName);
             user.setUserPassword(HashUtil.sha256(userPassword));
             int ret = (Integer) session.save(user);
-            tx.commit();
+            session.getTransaction().commit();
             session.close();
-            return ret;
+            return ret == 0 ? -1 : 0;
         } catch (Exception e) {
-            if (tx != null)
-                tx.rollback();
-            return 0;
+            session.getTransaction().rollback();
+            session.close();
+            return -1;
         }
     }
 
     @SuppressWarnings("unchecked")
     public List<UserEntity> getAllUser() {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.openSession()) {
-            tx = session.beginTransaction();
+        Session session = HibernateUtil.openSession();
+        try {
+            session.beginTransaction();
             List<UserEntity> ret = session.createQuery("from UserEntity").list();
-            tx.commit();
+            session.getTransaction().commit();
             session.close();
             return ret;
         } catch (Exception e) {
-            if (tx != null)
-                tx.rollback();
+            session.getTransaction().rollback();
+            session.close();
             return new ArrayList<UserEntity>();
         }
     }
@@ -69,10 +68,12 @@ public class UserDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<UserEntity> getUserWithParam(String hql, String param) {
+    private List<UserEntity> getUserWithParam(String hql, String param) {
         Session session = HibernateUtil.openSession();
         Query query = session.createQuery(hql);
         query.setParameter(1, param);
-        return query.list();
+        List ret = query.list();
+        session.close();
+        return ret;
     }
 }

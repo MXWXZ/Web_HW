@@ -7,6 +7,14 @@
     box-shadow: 0 2px 8px #f0f1f2;
 }
 
+body {
+    background: #f0f2f5;
+}
+
+.clear {
+    clear: both;
+}
+
 .logo {
     float: left;
     height: 46px;
@@ -48,4 +56,29 @@
 
 .book-title:hover {
     color: #f26552;
+}
+
+.book-detail-img {
+    padding-right: 20px;
+    border-right: 1px solid #d9d9d9;
+}
+
+.book-detail-info {
+    padding-left: 30px;
+}
+
+.book-price {
+    font-size: 36px;
+    color: #e52222;
+}
+
+.book-amount-plus {
+    font-size: 23px;
+    border: 0 !important;
+    padding: 0 !important;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.cart-price {
+    font-size: 28px;
 }
