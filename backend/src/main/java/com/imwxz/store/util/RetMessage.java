@@ -1,22 +1,22 @@
-package com.imwxz.store.entity;
+package com.imwxz.store.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class MessageEntity {
+public class RetMessage {
     private int code;
     private String msg;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
 
-    public MessageEntity() {
+    public RetMessage() {
         this(0, "Success", null);
     }
 
-    public MessageEntity(int code, String msg) {
+    public RetMessage(int code, String msg) {
         this(code, msg, null);
     }
 
-    public MessageEntity(int code, String msg, Object data) {
+    public RetMessage(int code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;

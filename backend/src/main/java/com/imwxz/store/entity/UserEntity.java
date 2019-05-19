@@ -2,17 +2,31 @@ package com.imwxz.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Set;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "user", schema = "store")
 public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false)
     private int userId;
+
+    @Column(name = "user_name", nullable = false, length = 32)
     private String userName;
-    private String userPassword;
-    private String userEmail;
-    private int userStatus;
-    private int userPermission;
+
     @JsonIgnore
-    private Set<OrderEntity> ordersByUserId;
+    @Column(name = "user_password", nullable = false, length = 64)
+    private String userPassword;
+
+    @Column(name = "user_email", nullable = false, length = 32)
+    private String userEmail;
+
+    @Column(name = "user_status", nullable = false)
+    private int userStatus;
+
+    @Column(name = "user_permission", nullable = false)
+    private int userPermission;
 
     public int getUserId() {
         return userId;
@@ -60,13 +74,5 @@ public class UserEntity {
 
     public void setUserPermission(int userPermission) {
         this.userPermission = userPermission;
-    }
-
-    public Set<OrderEntity> getOrdersByUserId() {
-        return ordersByUserId;
-    }
-
-    public void setOrdersByUserId(Set<OrderEntity> ordersByUserId) {
-        this.ordersByUserId = ordersByUserId;
     }
 }

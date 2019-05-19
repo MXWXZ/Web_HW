@@ -61,7 +61,7 @@ class UserManage extends Component {
     constructor(props) {
         super(props);
 
-        axios.get(`/api/allusers`)
+        axios.get(`/api/users`)
             .then(res => {
                 this.setState({
                     user: res.data.data,

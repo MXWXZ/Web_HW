@@ -1,7 +1,8 @@
 package com.imwxz.store.controller;
 
-import com.imwxz.store.dao.CartDao;
-import com.imwxz.store.entity.MessageEntity;
+import com.imwxz.store.service.ICartService;
+import com.imwxz.store.util.RetMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,45 +10,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CartController {
+    @Autowired
+    ICartService cart;
+
     @RequestMapping(value = "/api/cart", method = RequestMethod.GET)
-    public MessageEntity getCart(@RequestParam("userId") Integer userId) {
-        CartDao cart = new CartDao();
-        MessageEntity ret = new MessageEntity();
-        ret.setData(cart.getCartByUserId(userId));
+    public RetMessage getCart(@RequestParam("userId") Integer userId) {
+        RetMessage ret = new RetMessage();
+        ret.setData(cart.findCart(userId));
         return ret;
     }
 
     @RequestMapping(value = "/api/cart", method = RequestMethod.PUT)
-    public MessageEntity addCart(@RequestParam("userId") Integer userId,
-                                 @RequestParam("bookId") Integer bookId,
-                                 @RequestParam("cartAmount") Integer cartAmount) {
-        CartDao cart = new CartDao();
+    public RetMessage addCart(@RequestParam("userId") Integer userId,
+                              @RequestParam("bookId") Integer bookId,
+                              @RequestParam("cartAmount") Integer cartAmount) {
         return ErrorHandler(cart.addCart(userId, bookId, cartAmount));
     }
 
     @RequestMapping(value = "/api/cart", method = RequestMethod.POST)
-    public MessageEntity editCart(@RequestParam("userId") Integer userId,
-                                  @RequestParam("bookId") Integer bookId,
-                                  @RequestParam("cartAmount") Integer cartAmount) {
-        CartDao cart = new CartDao();
+    public RetMessage editCart(@RequestParam("userId") Integer userId,
+                               @RequestParam("bookId") Integer bookId,
+                               @RequestParam("cartAmount") Integer cartAmount) {
         return ErrorHandler(cart.editCart(userId, bookId, cartAmount));
     }
 
-    private MessageEntity ErrorHandler(int res) {
-        MessageEntity ret = new MessageEntity();
+    private RetMessage ErrorHandler(int res) {
+        RetMessage ret = new RetMessage();
         ret.setCode(res);
-        if (res == -1)
-            ret.setMsg("Unknown error!");
-        else if (res == 1)
+        if (res == 1)
             ret.setMsg("No record exists!");
         return ret;
     }
 
     @RequestMapping(value = "/api/cart", method = RequestMethod.DELETE)
-    public MessageEntity deleteCart(@RequestParam("userId") Integer userId,
-                                    @RequestParam("bookId") Integer bookId) {
-        CartDao cart = new CartDao();
-        MessageEntity ret = new MessageEntity();
+    public RetMessage deleteCart(@RequestParam("userId") Integer userId,
+                                 @RequestParam("bookId") Integer bookId) {
         return ErrorHandler(cart.deleteCart(userId, bookId));
     }
 }

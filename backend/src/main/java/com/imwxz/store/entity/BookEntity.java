@@ -1,20 +1,35 @@
 package com.imwxz.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
 
-import java.util.Set;
-
+@Entity
+@Table(name = "book", schema = "store")
 public class BookEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id", nullable = false)
     private int bookId;
+
+    @Column(name = "book_name", nullable = false, length = 256)
     private String bookName;
+
+    @Column(name = "book_author", nullable = true, length = 256)
     private String bookAuthor;
+
+    @Column(name = "book_price", nullable = false)
     private int bookPrice;
+
+    @Column(name = "book_isbn", nullable = false, length = 32)
     private String bookIsbn;
+
+    @Column(name = "book_amount", nullable = false)
     private int bookAmount;
+
+    @Column(name = "book_img", nullable = true, length = 32)
     private String bookImg;
+
+    @Column(name = "book_detail", nullable = true, length = 1024)
     private String bookDetail;
-    @JsonIgnore
-    private Set<OrderItemEntity> orderItemsByBookId;
 
     public int getBookId() {
         return bookId;
@@ -78,13 +93,5 @@ public class BookEntity {
 
     public void setBookDetail(String bookDetail) {
         this.bookDetail = bookDetail;
-    }
-
-    public Set<OrderItemEntity> getOrderItemsByBookId() {
-        return orderItemsByBookId;
-    }
-
-    public void setOrderItemsByBookId(Set<OrderItemEntity> orderItemsByBookId) {
-        this.orderItemsByBookId = orderItemsByBookId;
     }
 }

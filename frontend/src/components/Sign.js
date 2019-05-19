@@ -84,13 +84,13 @@ class Signup extends Component {
 
     validateUserName = (rule, value, callback) => {
         if (value) {
-            axios.get(`/api/users`, {
+            axios.get(`/api/userVerify`, {
                 params: {
                     userName: value
                 }
             })
                 .then(res => {
-                    if (res.data.length === 1)
+                    if (res.data.code !== 0)
                         callback('Username already exists!');
                     else
                         callback();
@@ -102,13 +102,13 @@ class Signup extends Component {
 
     validateEmail = (rule, value, callback) => {
         if (value) {
-            axios.get(`/api/users`, {
+            axios.get(`/api/userVerify`, {
                 params: {
                     userEmail: value
                 }
             })
                 .then(res => {
-                    if (res.data.length === 1)
+                    if (res.data.code !== 0)
                         callback('Email already exists!');
                     else
                         callback();

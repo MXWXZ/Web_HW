@@ -1,57 +1,48 @@
 package com.imwxz.store.controller;
 
-import com.imwxz.store.dao.UserDao;
-import com.imwxz.store.entity.MessageEntity;
-import com.imwxz.store.entity.UserEntity;
+import com.imwxz.store.service.IUserService;
+import com.imwxz.store.util.RetMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 public class UserController {
-    @RequestMapping(value = "/api/allusers", method = RequestMethod.GET)
-    public MessageEntity getAllUser() {
-        UserDao user = new UserDao();
-        MessageEntity ret = new MessageEntity();
-        ret.setData(user.getAllUser());
-        return ret;
-    }
+    @Autowired
+    private IUserService user;
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
-    public List<UserEntity> getUser(@RequestParam(value = "userId", required = false) Integer userId,
-                                    @RequestParam(value = "userName", defaultValue = "") String userName,
-                                    @RequestParam(value = "userEmail", defaultValue = "") String userEmail) {
-        UserDao user = new UserDao();
-        if (userId != null)
-            return user.getUserById(userId);
-        else if (!userName.isEmpty())
-            return user.getUserByName(userName);
-        else if (!userEmail.isEmpty())
-            return user.getUserByEmail(userEmail);
-        return new ArrayList<UserEntity>();
+    @RequestMapping(value = "/api/userVerify", method = RequestMethod.GET)
+    public RetMessage verifyUser(@RequestParam(value = "userId", required = false) Integer userId,
+                                 @RequestParam(value = "userName", required = false) String userName,
+                                 @RequestParam(value = "userEmail", required = false) String userEmail) {
+        RetMessage ret = new RetMessage();
+
+        if (userId != null || userName != null || userEmail != null) {
+            if (user.findUser(userId, userName, userEmail) != null) {
+                ret.setCode(1);
+                ret.setMsg("User already exists!");
+            }
+        } else {
+            ret.setCode(2);
+            ret.setMsg("No condition exists!");
+        }
+        return ret;
     }
 
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-    public MessageEntity signUp(@RequestParam("userEmail") String userEmail,
-                                @RequestParam("userName") String userName,
-                                @RequestParam("userPassword") String userPassword) {
-        UserDao user = new UserDao();
-        if (!user.getUserByEmail(userEmail).isEmpty())
-            return new MessageEntity(1, "Email already exists!");
-        if (!user.getUserByName(userName).isEmpty())
-            return new MessageEntity(2, "Username already exists!");
+    public RetMessage signUp(@RequestParam("userEmail") String userEmail,
+                             @RequestParam("userName") String userName,
+                             @RequestParam("userPassword") String userPassword) {
         if (userPassword.length() < 6)
-            return new MessageEntity(3, "Password is too short!");
+            return new RetMessage(3, "Password is too short!");
+        if (user.findUser(null, null, userEmail) != null)
+            return new RetMessage(1, "Email already exists!");
+        if (user.findUser(null, userName, null) != null)
+            return new RetMessage(2, "Username already exists!");
 
-        MessageEntity ret = new MessageEntity();
-        ret.setCode(user.signUp(userEmail, userName, userPassword));
-        if (ret.getCode() == -1)
-            ret.setMsg("Unknown error!");
-
-        return ret;
+        user.addUser(userEmail, userName, userPassword);
+        return new RetMessage();
     }
 }

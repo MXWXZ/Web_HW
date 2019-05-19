@@ -2,22 +2,41 @@ package com.imwxz.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "order_item", schema = "store")
 public class OrderItemEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_item_id", nullable = false)
     private int orderItemId;
+
+    @Column(name = "order_id", nullable = false)
     private int orderId;
+
+    @Column(name = "book_id", nullable = false)
     private int bookId;
+
+    @Column(name = "order_amount", nullable = false)
     private int orderAmount;
+
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false, insertable = false, updatable = false)
     private OrderEntity orderByOrderId;
+
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", referencedColumnName = "book_id", nullable = false, insertable = false, updatable = false)
     private BookEntity bookByBookId;
 
-    public int getBookId() {
-        return bookId;
+    public int getOrderItemId() {
+        return orderItemId;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setOrderItemId(int orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
     public int getOrderId() {
@@ -28,12 +47,12 @@ public class OrderItemEntity {
         this.orderId = orderId;
     }
 
-    public int getOrderItemId() {
-        return orderItemId;
+    public int getBookId() {
+        return bookId;
     }
 
-    public void setOrderItemId(int orderItemId) {
-        this.orderItemId = orderItemId;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 
     public int getOrderAmount() {

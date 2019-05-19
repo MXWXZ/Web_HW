@@ -167,7 +167,7 @@ class OrderView extends Component {
         }
         return (
             <Row>
-                <Table rowKey={record => record.key} expandRowByClick={true} expandedRowRender={expandedRowRender} bordered={true}
+                <Table rowKey={(record, index) => { record.key = index; return index }} expandRowByClick={true} expandedRowRender={expandedRowRender} bordered={true}
                     columns={columns} dataSource={this.state.order} onExpand={this.onExpand} />
             </Row>
         );
