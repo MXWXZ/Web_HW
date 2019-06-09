@@ -29,7 +29,7 @@ CREATE TABLE `book` (
   `book_price` int(11) NOT NULL DEFAULT 0,
   `book_isbn` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `book_amount` int(11) NOT NULL DEFAULT 0,
-  `book_img` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'random value',
+  `book_img` varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'mongodb id',
   `book_detail` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`book_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -41,7 +41,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES (1,'The Man Who Changed China','Robert Lawrence Kuhn',4800,'7-5327-3654-7518',1926,'i1km85x0zbc97cbr.jpg','The Man Who Changed China: The Life and Legacy of Jiang Zemin a biography of former Chinese leader Jiang Zemin by Robert Lawrence Kuhn was published in 2005, in English and Chinese. It has generated both attention and controversy.'),(2,'Nineteen Eighty-Four','George Orwell',1950,'9-7875-4471-1647',64,'w7nvxvfj9nhj1tzu.jpg','Nineteen Eighty-Four, often published as 1984, is a dystopian novel by English writer George Orwell published in June 1949. The novel is set in the year 1984 when most of the world population have become victims of perpetual war, omnipresent government surveillance and propaganda.'),(3,'No Longer Human','Osamu Dazai',2500,'9-7875-0638-0263',89,'f1ohtudwcx20ie3s.jpg','No Longer Human is a Japanese novel by Osamu Dazai. Published after Run Melos and The Setting Sun, No Longer Human is considered Dazai\'s masterpiece and ranks as the second-best selling novel in Japan, behind Natsume Sōseki\'s Kokoro.');
+INSERT INTO `book` VALUES (1,'The Man Who Changed China','Robert Lawrence Kuhn',4800,'7-5327-3654-7518',1926,'5cfcb9a26872a74ff53bd196','The Man Who Changed China: The Life and Legacy of Jiang Zemin a biography of former Chinese leader Jiang Zemin by Robert Lawrence Kuhn was published in 2005, in English and Chinese. It has generated both attention and controversy.'),(2,'Nineteen Eighty-Four','George Orwell',1950,'9-7875-4471-1647',64,'5cfcb9b46872a74ff53bd197','Nineteen Eighty-Four, often published as 1984, is a dystopian novel by English writer George Orwell published in June 1949. The novel is set in the year 1984 when most of the world population have become victims of perpetual war, omnipresent government surveillance and propaganda.'),(3,'No Longer Human','Osamu Dazai',2500,'9-7875-0638-0263',89,'5cfcb9b86872a74ff53bd198','No Longer Human is a Japanese novel by Osamu Dazai. Published after Run Melos and The Setting Sun, No Longer Human is considered Dazai\'s masterpiece and ranks as the second-best selling novel in Japan, behind Natsume Sōseki\'s Kokoro.');
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 

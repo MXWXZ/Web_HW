@@ -8,4 +8,6 @@ public interface IBookService {
     public BookEntity findBook(int bookId);
 
     public List<BookEntity> findAll();
+
+    public void deleteBook(int bookId);
 }

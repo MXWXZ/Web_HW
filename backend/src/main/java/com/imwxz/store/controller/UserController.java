@@ -31,6 +31,25 @@ public class UserController {
         return ret;
     }
 
+    @RequestMapping(value = "/api/users", method = RequestMethod.PUT)
+    public RetMessage updateUser(@RequestParam(value = "userId") Integer userId,
+                                 @RequestParam(value = "userStatus", required = false) Integer userStatus) {
+        RetMessage ret = new RetMessage();
+
+        if (user.freezeUser(userId, userStatus) != 0) {
+            ret.setCode(1);
+            ret.setMsg("User do not exists!");
+        }
+        return ret;
+    }
+
+    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    public RetMessage getUser() {
+        RetMessage ret = new RetMessage();
+        ret.setData(user.findAllUser());
+        return ret;
+    }
+
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
     public RetMessage signUp(@RequestParam("userEmail") String userEmail,
                              @RequestParam("userName") String userName,

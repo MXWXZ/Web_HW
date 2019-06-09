@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Divider, Table, Input, Row } from 'antd'
+import { Button, Divider, Table, Input, Row, message, Modal } from 'antd'
 import axios from 'axios';
 
 const Search = Input.Search;
+const confirm = Modal.confirm;
 
 class BookView extends Component {
     state = {
@@ -15,6 +16,7 @@ class BookView extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.deleteBook = this.deleteBook.bind(this);
     }
 
     componentDidMount() {
@@ -25,6 +27,42 @@ class BookView extends Component {
                     bookSave: res.data.data
                 })
             });
+    }
+
+    deleteBook(e) {
+        let id = parseInt(e.target.id);
+        let call = this;
+        confirm({
+            title: 'Are you sure delete this book?',
+            content: 'This operation can not be undo!',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                axios.delete(`/api/books`, {
+                    params: {
+                        bookId: id
+                    }
+                })
+                    .then(res => {
+                        if (res.data.code !== 0) {
+                            message.error(res.data.msg);
+                        } else {
+                            let newbook = call.state.book;
+                            for (let i = 0, len = newbook.length; i < len; ++i) {
+                                if (newbook[i].bookId === id) {
+                                    newbook.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            call.setState({
+                                book: newbook,
+                                bookSave: newbook
+                            })
+                        }
+                    });
+            }
+        });
     }
 
     handleChange() {
@@ -45,7 +83,7 @@ class BookView extends Component {
                 align: 'center',
                 width: 150,
                 render: bookImg => (
-                    <img className='book-img' src={'/img/' + bookImg} alt={bookImg} />
+                    <img className='book-img' src={'/image/' + bookImg} alt={bookImg} />
                 )
             }, {
                 title: 'Name',
@@ -82,9 +120,9 @@ class BookView extends Component {
                 align: 'center',
                 render: (text, record) => (
                     <span>
-                        <Button size='small'>Edit</Button>
+                        <Button id={record.bookId} size='small'>Edit</Button>
                         <Divider type="vertical" />
-                        <Button size='small' type='danger'>Delete</Button>
+                        <Button id={record.bookId} size='small' type='danger' onClick={this.deleteBook}>Delete</Button>
                     </span>
                 )
             });

@@ -30,4 +30,10 @@ public class BookController {
 
         return ret;
     }
+
+    @RequestMapping(value = "/api/books", method = RequestMethod.DELETE)
+    public RetMessage deleteBook(@RequestParam(value = "bookId") Integer bookId) {
+        book.deleteBook(bookId);
+        return new RetMessage();
+    }
 }

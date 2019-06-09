@@ -8,20 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRepository user;
 
     @Override
-    public UserEntity findUser(Integer id, String userName, String userEmail) {
-        if (id != null)
-            return user.findById(id).orElse(null);
+    public UserEntity findUser(Integer userId, String userName, String userEmail) {
+        if (userId != null)
+            return user.findById(userId).orElse(null);
         else if (userName != null)
             return user.findByUserName(userName);
         else if (userEmail != null)
             return user.findByUserEmail(userEmail);
         return null;
+    }
+
+    @Override
+    public List<UserEntity> findAllUser() {
+        return user.findAll();
     }
 
     @Transactional
@@ -32,5 +39,16 @@ public class UserServiceImpl implements IUserService {
         obj.setUserEmail(userEmail);
         obj.setUserPassword(HashUtil.sha256(userPassword));
         user.save(obj);
+    }
+
+    @Override
+    public int freezeUser(int userId, Integer userStatus) {
+        UserEntity obj = user.findById(userId).orElse(null);
+        if (obj == null)
+            return 1;
+
+        obj.setUserStatus(userStatus);
+        user.save(obj);
+        return 0;
     }
 }

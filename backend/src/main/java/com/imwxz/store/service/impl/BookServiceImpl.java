@@ -22,4 +22,9 @@ public class BookServiceImpl implements IBookService {
     public List<BookEntity> findAll() {
         return book.findAll();
     }
+
+    @Override
+    public void deleteBook(int bookId) {
+        book.deleteById(bookId);
+    }
 }
