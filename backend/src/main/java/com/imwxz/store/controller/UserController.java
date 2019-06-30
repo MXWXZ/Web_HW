@@ -2,18 +2,16 @@ package com.imwxz.store.controller;
 
 import com.imwxz.store.service.IUserService;
 import com.imwxz.store.util.RetMessage;
+import com.imwxz.store.util.jwt.AdminToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
     @Autowired
     private IUserService user;
 
-    @RequestMapping(value = "/api/userVerify", method = RequestMethod.GET)
+    @GetMapping(value = "/api/userVerify")
     public RetMessage verifyUser(@RequestParam(value = "userId", required = false) Integer userId,
                                  @RequestParam(value = "userName", required = false) String userName,
                                  @RequestParam(value = "userEmail", required = false) String userEmail) {
@@ -31,7 +29,8 @@ public class UserController {
         return ret;
     }
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.PUT)
+    @AdminToken
+    @PutMapping(value = "/api/users")
     public RetMessage updateUser(@RequestParam(value = "userId") Integer userId,
                                  @RequestParam(value = "userStatus", required = false) Integer userStatus) {
         RetMessage ret = new RetMessage();
@@ -43,14 +42,15 @@ public class UserController {
         return ret;
     }
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    @AdminToken
+    @GetMapping(value = "/api/users")
     public RetMessage getUser() {
         RetMessage ret = new RetMessage();
         ret.setData(user.findAllUser());
         return ret;
     }
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
+    @PostMapping(value = "/api/users")
     public RetMessage signUp(@RequestParam("userEmail") String userEmail,
                              @RequestParam("userName") String userName,
                              @RequestParam("userPassword") String userPassword) {

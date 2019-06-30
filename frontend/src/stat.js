@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import { Statistic, Row, Col, Card, DatePicker, message } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 
 const { RangePicker } = DatePicker;
 
-const cookies = new Cookies();
-
 class Stat extends Component {
     state = {
-        userId: cookies.get('userId'),
+        userId: sessionStorage.getItem('userId'),
         totOrders: 0,
         totBooks: 0,
         totMoney: 0,
@@ -27,6 +24,9 @@ class Stat extends Component {
         axios.get(`/api/stat`, {
             params: {
                 userId: this.state.userId
+            },
+            headers: {
+                token: sessionStorage.getItem('token')
             }
         })
             .then(res => {
@@ -52,6 +52,9 @@ class Stat extends Component {
                 userId: this.state.userId,
                 minTime: mint,
                 maxTime: maxt
+            },
+            headers: {
+                token: sessionStorage.getItem('token')
             }
         })
             .then(res => {

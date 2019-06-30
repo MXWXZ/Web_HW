@@ -82,3 +82,7 @@ body {
 .cart-price {
     font-size: 28px;
 }
+
+.book-form {
+    margin-bottom: 0;
+}

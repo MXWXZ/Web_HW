@@ -4,9 +4,9 @@ import com.imwxz.store.entity.UserEntity;
 import com.imwxz.store.service.IUserService;
 import com.imwxz.store.util.HashUtil;
 import com.imwxz.store.util.RetMessage;
+import com.imwxz.store.util.jwt.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ public class TokensController {
     @Autowired
     private IUserService user;
 
-    @RequestMapping(value = "/api/tokens", method = RequestMethod.POST)
+    @PostMapping(value = "/api/tokens")
     public RetMessage signIn(@RequestParam("userName") String userName,
                              @RequestParam("userPassword") String userPassword) {
         RetMessage ret = new RetMessage();
@@ -26,7 +26,7 @@ public class TokensController {
                 ret.setCode(2);
                 ret.setMsg("Your account has been frozen!");
             } else {
-                ret.setData(obj);
+                ret.setData(JWTUtil.createJWT(3600000, obj));
             }
         } else {
             ret.setCode(1);

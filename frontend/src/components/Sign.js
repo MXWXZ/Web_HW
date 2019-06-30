@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'antd';
 import { message, Form, Icon, Input, Checkbox } from 'antd';
 import axios from 'axios';
-import Qs from 'qs'
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
+import Qs from 'qs';
+import jwt_decode from 'jwt-decode';
 
 /*
     Signin form
@@ -28,15 +26,17 @@ class Signin extends Component {
                         if (data.code !== 0) {
                             message.error(data.msg);
                         } else {
-                            cookies.set('userId', data.data.userId);
-                            cookies.set('userName', data.data.userName);
-                            cookies.set('userEmail', data.data.userEmail);
-                            cookies.set('userPermission', data.data.userPermission);
+                            sessionStorage.setItem('token', data.data);
+                            let decoded = jwt_decode(data.data);
+                            sessionStorage.setItem('userId', decoded.userId);
+                            sessionStorage.setItem('userName', decoded.userName);
+                            sessionStorage.setItem('userPermission', decoded.userPermission);
                             message.success("Sign in success!");
                             setTimeout(() => { window.location.reload(); }, 1000);
                         }
                     })
             }
+            this.setState({ loading: false });
         });
     }
 
@@ -150,6 +150,7 @@ class Signup extends Component {
                         }
                     })
             }
+            this.setState({ loading: false });
         });
     }
 

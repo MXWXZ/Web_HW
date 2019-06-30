@@ -10,4 +10,10 @@ public interface IBookService {
     public List<BookEntity> findAll();
 
     public void deleteBook(int bookId);
+
+    public int addBook(String bookName, String bookAuthor, int bookPrice, String bookIsbn,
+                       int bookAmount, String bookImg, String bookDetail);
+
+    public int editBook(int bookId, String bookName, String bookAuthor, int bookPrice, String bookIsbn,
+                        int bookAmount, String bookImg, String bookDetail);
 }

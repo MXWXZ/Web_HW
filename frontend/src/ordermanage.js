@@ -65,7 +65,7 @@ class OrderManage extends Component {
     constructor(props) {
         super(props);
 
-        axios.get(`/api/orders`)
+        axios.get(`/api/orders`, { headers: { token: sessionStorage.getItem('token') } })
             .then(res => {
                 this.setState({
                     order: res.data.data,

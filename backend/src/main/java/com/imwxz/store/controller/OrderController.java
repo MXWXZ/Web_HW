@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imwxz.store.service.IOrderService;
 import com.imwxz.store.util.RetMessage;
+import com.imwxz.store.util.jwt.UserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ public class OrderController {
     @Autowired
     private IOrderService order;
 
+    @UserToken
     @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
     public RetMessage getOrders(@RequestParam(value = "userId", required = false) Integer userId,
                                 @RequestParam(value = "orderId", required = false) Integer orderId) {
@@ -27,6 +29,7 @@ public class OrderController {
         return ret;
     }
 
+    @UserToken(adminFetch = false)
     @RequestMapping(value = "/api/orders", method = RequestMethod.PUT)
     public RetMessage addOrders(@RequestBody String json) {
         RetMessage ret = new RetMessage();

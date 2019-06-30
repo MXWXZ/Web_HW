@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Row, Menu } from 'antd';
-import Cookies from 'universal-cookie';
 import SignBar from './Sign';
 import AvatarBar from './Avatar';
 
-const cookies = new Cookies();
 
 /*
     Header
@@ -16,9 +14,9 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: cookies.get('userId'),
-            userName: cookies.get('userName'),
-            userPermission: cookies.get('userPermission'),
+            userId: sessionStorage.getItem('userId'),
+            userName: sessionStorage.getItem('userName'),
+            userPermission: sessionStorage.getItem('userPermission'),
         };
     }
     render() {

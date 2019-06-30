@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown, Button, Menu, Icon } from 'antd';
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
 
 function handleMenuClick(e) {
     if (e.key === '0') {
-        cookies.remove('userId');
-        cookies.set('userName');
-        cookies.set('userEmail');
-        cookies.set('userPermission');
+        sessionStorage.clear();
         window.location.reload();
     }
 }

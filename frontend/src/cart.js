@@ -3,18 +3,16 @@ import { Link } from 'react-router-dom';
 import { Modal, Button, Table, Typography, message, InputNumber } from 'antd';
 import axios from 'axios';
 import Qs from 'qs';
-import Cookies from 'universal-cookie';
 
 const { Text } = Typography;
 const confirm = Modal.confirm;
-const cookies = new Cookies();
 
 class Cart extends Component {
     state = {
         selectedRowKeys: [],
         book: [],
         bookbak: [],
-        totPrice: 0
+        totPrice: 0,
     }
 
     constructor(props) {
@@ -28,7 +26,10 @@ class Cart extends Component {
     componentDidMount() {
         axios.get(`/api/cart`, {
             params: {
-                userId: cookies.get('userId'),
+                userId: sessionStorage.getItem('userId'),
+            },
+            headers: {
+                token: sessionStorage.getItem('token'),
             }
         })
             .then(res => {
@@ -47,10 +48,10 @@ class Cart extends Component {
         });
 
         axios.post(`/api/cart`, Qs.stringify({
-            userId: cookies.get('userId'),
+            userId: sessionStorage.getItem('userId'),
             bookId: newbook[target.name].bookId,
             cartAmount: target.value
-        }))
+        }), { headers: { token: sessionStorage.getItem('token') } })
             .then(res => {
                 if (res.data.code !== 0) {
                     message.error(res.data.msg);
@@ -65,8 +66,11 @@ class Cart extends Component {
         const target = e.target;
         axios.delete(`/api/cart`, {
             params: {
-                userId: cookies.get('userId'),
+                userId: sessionStorage.getItem('userId'),
                 bookId: this.state.book[target.name].bookId,
+            },
+            headers: {
+                token: sessionStorage.getItem('token'),
             }
         })
             .then(res => {
@@ -110,15 +114,16 @@ class Cart extends Component {
             onOk() {
                 return new Promise((resolve, reject) => {
                     axios.put(`/api/orders`, {
-                        userId: cookies.get('userId'),
+                        userId: sessionStorage.getItem('userId'),
                         cartId: booklist,
-                    }).then(res => {
-                        if (res.data.code !== 0)
-                            message.error(res.data.msg);
-                        else
-                            message.success("Paid successfully!");
-                        setTimeout(() => { window.location.reload(); }, 1000);
-                    });
+                    }, { headers: { token: sessionStorage.getItem('token') } })
+                        .then(res => {
+                            if (res.data.code !== 0)
+                                message.error(res.data.msg);
+                            else
+                                message.success("Paid successfully!");
+                            setTimeout(() => { window.location.reload(); }, 1000);
+                        });
                     return reject;
                 }).catch(() => console.log('Oops errors!'));
             },

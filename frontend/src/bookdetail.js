@@ -3,10 +3,8 @@ import { withRouter } from 'react-router';
 import { message, Typography, Row, Col, InputNumber, Button } from 'antd';
 import axios from 'axios';
 import Qs from 'qs';
-import Cookies from 'universal-cookie';
 
 const { Text } = Typography;
-const cookies = new Cookies();
 
 class BookDetail extends Component {
     state = {
@@ -50,21 +48,22 @@ class BookDetail extends Component {
     }
 
     addCart() {
-        if (!cookies.get('userId')) {
+        if (!sessionStorage.getItem('userId')) {
             document.getElementById('signin').click();
         } else {
             let amount = this.state.buyAmount;
             axios.put(`/api/cart`, Qs.stringify({
-                userId: cookies.get('userId'),
+                userId: sessionStorage.getItem('userId'),
                 bookId: this.state.bookId,
                 cartAmount: amount
-            })).then(res => {
-                if (res.data.code !== 0) {
-                    message.error(res.data.msg);
-                } else {
-                    message.success("Add to cart successfully!");
-                }
-            });
+            }), { headers: { token: sessionStorage.getItem('token') } })
+                .then(res => {
+                    if (res.data.code !== 0) {
+                        message.error(res.data.msg);
+                    } else {
+                        message.success("Add to cart successfully!");
+                    }
+                });
         }
     }
 
@@ -77,7 +76,7 @@ class BookDetail extends Component {
         return (
             <Row>
                 <Col span={6} className='book-detail-img' style={{ height: '350px' }}>
-                    <img alt='cover' src={'/img/' + this.state.bookImg} style={{ height: '100%' }} />
+                    <img alt='cover' src={'/image/' + this.state.bookImg} style={{ height: '100%' }} />
                 </Col>
                 <Col span={18} className='book-detail-info'>
                     <div style={{ height: '180px' }}>

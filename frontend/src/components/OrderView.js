@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Tag, Row, Table } from 'antd';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 
-const cookies = new Cookies();
 
 /*eslint-disable no-extend-native*/
 Date.prototype.Format = function (fmt) {
@@ -28,8 +26,8 @@ class OrderView extends Component {
         orderSave: [],
         subList: [],
 
-        userId: cookies.get('userId'),
-        userPermission: cookies.get('userPermission'),
+        userId: sessionStorage.getItem('userId'),
+        userPermission: sessionStorage.getItem('userPermission'),
     }
 
     constructor(props) {
@@ -43,7 +41,7 @@ class OrderView extends Component {
         if (this.state.userPermission === '0')
             url += '?userId=' + this.state.userId;
 
-        axios.get(url)
+        axios.get(url, { headers: { token: sessionStorage.getItem('token') } })
             .then(res => {
                 for (let i = 0; i < res.data.data.length; ++i)
                     this.state.subList.push([]);
@@ -59,6 +57,9 @@ class OrderView extends Component {
             axios.get(`/api/orders`, {
                 params: {
                     orderId: record.orderId
+                },
+                headers: {
+                    token: sessionStorage.getItem('token')
                 }
             })
                 .then(res => {

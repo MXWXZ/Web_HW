@@ -15,7 +15,7 @@ class UserManage extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/api/users`)
+        axios.get(`/api/users`, { headers: { token: sessionStorage.getItem('token') } })
             .then(res => {
                 this.setState({
                     user: res.data.data,
@@ -29,7 +29,7 @@ class UserManage extends Component {
         axios.put(`/api/users`, Qs.stringify({
             userId: id,
             userStatus: status,
-        }))
+        }), { headers: { token: sessionStorage.getItem('token') } })
             .then(res => {
                 if (res.data.code !== 0) {
                     message.error(res.data.msg);
