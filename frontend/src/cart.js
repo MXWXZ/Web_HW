@@ -109,7 +109,7 @@ class Cart extends Component {
         });
         confirm({
             title: 'Do you want to pay now?',
-            content: 'Total price: ¥' + tot,
+            content: 'Total price: ¥' + tot.toFixed(2),
             centered: true,
             onOk() {
                 return new Promise((resolve, reject) => {
@@ -117,10 +117,10 @@ class Cart extends Component {
                         userId: sessionStorage.getItem('userId'),
                         cartId: booklist,
                     }, {
-                        headers: {
-                            userId: sessionStorage.getItem('userId'),
-                            token: sessionStorage.getItem('token')
-                        }
+                            headers: {
+                                userId: sessionStorage.getItem('userId'),
+                                token: sessionStorage.getItem('token')
+                            }
                         })
                         .then(res => {
                             if (res.data.code !== 0)

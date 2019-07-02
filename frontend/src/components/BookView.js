@@ -54,7 +54,7 @@ class EditBook extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 let newValue = values;
-                newValue.bookPrice *= 100;
+                newValue.bookPrice = parseInt(newValue.bookPrice * 100);
                 newValue.bookImg = this.state.bookImg;
                 if (this.props.bookId !== '') {
                     axios.put('/api/books', Qs.stringify(values), { headers: { token: sessionStorage.getItem('token') } })
@@ -175,12 +175,12 @@ class EditBook extends Component {
                         </Form.Item>
                         <Form.Item label="Amount">
                             {getFieldDecorator('bookAmount', {
-                                initialValue: 1,
+                                initialValue: 0,
                                 rules: [
                                     { type: 'integer' },
                                     { required: true, message: 'Please input amount!' }],
                             })(
-                                <InputNumber min={1} max={9999} />,
+                                <InputNumber min={0} max={9999} />,
                             )}
                         </Form.Item>
                         <Form.Item label="Detail">

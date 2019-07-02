@@ -13,7 +13,7 @@ class BookDetail extends Component {
         bookAuthor: '',
         bookPrice: 0,
         bookIsbn: '',
-        bookAmount: 0,
+        bookAmount: 1,
         bookImg: '',
         bookDetail: '',
         buyAmount: 1,
@@ -79,11 +79,11 @@ class BookDetail extends Component {
                 <div style={{ display: 'inline' }}>
                     <Row style={{ marginTop: '10px' }}>
                         <Text style={{ marginRight: '10px' }}>Amount: </Text>
-                        <InputNumber id='amount' min={1} max={this.state.bookAmount} defaultValue={1} onChange={this.onAmountChange} />
+                        <InputNumber id='amount' min={1} max={this.state.bookAmount === 0 ? 1 : this.state.bookAmount} defaultValue={1} onChange={this.onAmountChange} />
                         <Text style={{ marginLeft: '20px' }}>Stock: {this.state.bookAmount}</Text>
                     </Row>
                     <Row style={{ marginTop: '20px' }}>
-                        <Button size='large' onClick={this.addCart}>Add to cart</Button>
+                        <Button size='large' onClick={this.addCart} disabled={this.state.bookAmount === 0 ? true : false}>Add to cart</Button>
                     </Row>
                 </div>
             );

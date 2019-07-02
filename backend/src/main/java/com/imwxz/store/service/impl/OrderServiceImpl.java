@@ -106,7 +106,7 @@ public class OrderServiceImpl implements IOrderService {
                     orderItem.save(item);
 
                     BookEntity bookObj = j.getBookByBookId();
-                    if (bookObj.getBookAmount() < j.getCartAmount()) {
+                    if (bookObj.getBookAmount() < j.getCartAmount() || bookObj.getBookAmount() == 0) {
                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                         return 2;
                     }
