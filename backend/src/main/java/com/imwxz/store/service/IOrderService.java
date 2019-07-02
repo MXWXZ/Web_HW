@@ -7,5 +7,7 @@ public interface IOrderService {
 
     public List findOrderByOrderId(int orderId);
 
+    public List findAll();
+
     public int addOrder(int userId, List<Integer> cartList);
 }

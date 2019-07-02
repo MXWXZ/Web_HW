@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Tag, Row, Table } from 'antd';
+import { Tag, Row, Table, Input } from 'antd';
 import axios from 'axios';
 
+const Search = Input.Search;
 
 /*eslint-disable no-extend-native*/
 Date.prototype.Format = function (fmt) {
@@ -34,6 +35,9 @@ class OrderView extends Component {
         super(props);
 
         this.onExpand = this.onExpand.bind(this);
+        this.findSublist = this.findSublist.bind(this);
+        this.getSublist = this.getSublist.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -43,8 +47,6 @@ class OrderView extends Component {
 
         axios.get(url, { headers: { token: sessionStorage.getItem('token') } })
             .then(res => {
-                for (let i = 0; i < res.data.data.length; ++i)
-                    this.state.subList.push([]);
                 this.setState({
                     order: res.data.data,
                     orderSave: res.data.data
@@ -52,10 +54,23 @@ class OrderView extends Component {
             });
     }
 
+    findSublist(key) {
+        for (var i = 0; i < this.state.subList.length; ++i)
+            if (this.state.subList[i].orderId === key)
+                return i;
+        return -1;
+    }
+
+    getSublist(key) {
+        let index = this.findSublist(key);
+        return index === -1 ? [] : this.state.subList[index];
+    }
+
     onExpand(expanded, record) {
-        if (expanded && this.state.subList[record.key].length === 0) {
+        if (expanded && this.findSublist(record.orderId) === -1) {
             axios.get(`/api/orders`, {
                 params: {
+                    userId: sessionStorage.getItem('userId'),
                     orderId: record.orderId
                 },
                 headers: {
@@ -63,13 +78,26 @@ class OrderView extends Component {
                 }
             })
                 .then(res => {
+                    res.data.data.orderId = record.orderId;
                     let newList = this.state.subList;
-                    newList[record.key] = res.data.data;
+                    newList.push(res.data.data);
                     this.setState({
                         subList: newList
                     })
                 });
         }
+    }
+
+    handleChange() {
+        let pattern = document.getElementById('search').value;
+        let list = this.state.orderSave.filter((item) => {
+            return (item.orderId).toString().indexOf(pattern) !== -1 ||
+                item.userName.indexOf(pattern) !== -1 ||
+                (item.orderPrice).toString().indexOf(pattern) !== -1;
+        })
+        this.setState({
+            order: list
+        })
     }
 
     render() {
@@ -154,7 +182,7 @@ class OrderView extends Component {
             ];
 
             return (
-                <Table rowKey={record => record.orderItemId} columns={columns} dataSource={this.state.subList[record.key]} pagination={false} />
+                <Table rowKey={record => record.orderItemId} columns={columns} dataSource={this.getSublist(record.orderId)} pagination={false} />
             );
         };
 
@@ -167,10 +195,15 @@ class OrderView extends Component {
             });
         }
         return (
-            <Row>
-                <Table rowKey={(record, index) => { record.key = index; return index }} expandRowByClick={true} expandedRowRender={expandedRowRender} bordered={true}
-                    columns={columns} dataSource={this.state.order} onExpand={this.onExpand} />
-            </Row>
+            <div>
+                <Row style={{ paddingBottom: '20px' }}>
+                    <Search id='search' placeholder='search order' onChange={this.handleChange} style={{ width: 300 }} />
+                </Row>
+                <Row>
+                    <Table rowKey={(record, index) => { record.key = index; return index }} expandRowByClick={true} expandedRowRender={expandedRowRender} bordered={true}
+                        columns={columns} dataSource={this.state.order} onExpand={this.onExpand} />
+                </Row>
+            </div>
         );
     }
 }

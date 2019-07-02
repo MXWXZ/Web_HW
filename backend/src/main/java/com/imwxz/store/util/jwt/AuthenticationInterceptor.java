@@ -42,12 +42,16 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 if (user == null)
                     throw new RuntimeException("You need user permission!");
                 if (userToken.verifyId()) {
-                    String userid = httpServletRequest.getParameter("userId");
-                    if (userToken.adminFetch() && user.getUserPermission() == 1 && userid == null)
+                    String userId = httpServletRequest.getParameter("userId");
+                    if (userToken.jsonBody())
+                        userId = httpServletRequest.getHeader("userId");
+                    if (!userToken.adminFetch() && user.getUserPermission() == 1)
+                        throw new RuntimeException("Need non-admin!");
+                    if (userToken.adminFetch() && user.getUserPermission() == 1 && userId == null)
                         return true;
-                    else if (userid == null)
+                    else if (userId == null)
                         throw new RuntimeException("Need userid!");
-                    int id = Integer.valueOf(userid);
+                    int id = Integer.valueOf(userId);
                     if (user.getUserId() != id)
                         throw new RuntimeException("Wrong userid!");
                 }

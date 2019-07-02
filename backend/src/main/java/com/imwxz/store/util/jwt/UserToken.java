@@ -13,4 +13,6 @@ public @interface UserToken {
     boolean verifyId() default true;
 
     boolean adminFetch() default true;
+
+    boolean jsonBody() default false;
 }

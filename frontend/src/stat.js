@@ -88,6 +88,7 @@ class Stat extends Component {
                 <Row type='flex' justify='center'>
                     <Col>
                         <RangePicker value={[moment.unix(this.state.minTime), moment.unix(this.state.maxTime)]} onChange={this.onChange}
+                            allowClear={false}
                             ranges={{ Today: [moment().startOf('day'), moment().endOf('day')], 'This Month': [moment().startOf('month'), moment().endOf('month')] }} />
                     </Col>
                 </Row>

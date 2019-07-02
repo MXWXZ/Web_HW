@@ -116,7 +116,12 @@ class Cart extends Component {
                     axios.put(`/api/orders`, {
                         userId: sessionStorage.getItem('userId'),
                         cartId: booklist,
-                    }, { headers: { token: sessionStorage.getItem('token') } })
+                    }, {
+                        headers: {
+                            userId: sessionStorage.getItem('userId'),
+                            token: sessionStorage.getItem('token')
+                        }
+                        })
                         .then(res => {
                             if (res.data.code !== 0)
                                 message.error(res.data.msg);
@@ -155,7 +160,7 @@ class Cart extends Component {
                 align: 'center',
                 width: 150,
                 render: bookImg => (
-                    <img className='book-img' src={'/img/' + bookImg} alt={bookImg} />
+                    <img className='book-img' src={'/image/' + bookImg} alt={bookImg} />
                 )
             }, {
                 title: 'Name',

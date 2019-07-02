@@ -26,9 +26,7 @@ class EditBook extends Component {
         bookImg: '',
     }
 
-    constructor(props) {
-        super(props);
-
+    componentDidMount() {
         if (this.props.bookId !== '')
             axios.get(`/api/books`, {
                 params: {

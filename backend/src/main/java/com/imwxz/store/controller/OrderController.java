@@ -17,20 +17,23 @@ public class OrderController {
     @Autowired
     private IOrderService order;
 
+    // Designed to read any order with any legal userId, not BUG :)
     @UserToken
-    @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
+    @GetMapping(value = "/api/orders")
     public RetMessage getOrders(@RequestParam(value = "userId", required = false) Integer userId,
                                 @RequestParam(value = "orderId", required = false) Integer orderId) {
         RetMessage ret = new RetMessage();
-        if (userId != null)
+        if (userId == null && orderId == null)
+            ret.setData(order.findAll());
+        else if (orderId == null)
             ret.setData(order.findOrderByUserId(userId));
-        else if (orderId != null)
+        else
             ret.setData(order.findOrderByOrderId(orderId));
         return ret;
     }
 
-    @UserToken(adminFetch = false)
-    @RequestMapping(value = "/api/orders", method = RequestMethod.PUT)
+    @UserToken(adminFetch = false, jsonBody = true)
+    @PutMapping(value = "/api/orders")
     public RetMessage addOrders(@RequestBody String json) {
         RetMessage ret = new RetMessage();
 

@@ -6,7 +6,6 @@ import Home from './home';
 import Explore from './explore';
 import UserManage from './usermanage';
 import BookManage from './bookmanage';
-import OrderManage from './ordermanage';
 import StatManage from './statmanage';
 import Cart from './cart';
 import Stat from './stat';
@@ -37,7 +36,7 @@ const StoreRouter = (
         <Route exact path='/explore' render={(props) => <Main {...props} content={Explore} default={'1'} />} />
         <AuthRoute permission='1' exact path='/usermanage' render={(props) => <Main {...props} content={UserManage} />} />
         <AuthRoute permission='1' exact path='/bookmanage' render={(props) => <Main {...props} content={BookManage} />} />
-        <AuthRoute permission='1' exact path='/ordermanage' render={(props) => <Main {...props} content={OrderManage} />} />
+        <AuthRoute permission='1' exact path='/ordermanage' render={(props) => <Main {...props} content={Order} />} />
         <AuthRoute permission='1' exact path='/statmanage' render={(props) => <Main {...props} content={StatManage} />} />
         <AuthRoute permission='0' exact path='/stat' render={(props) => <Main {...props} content={Stat} />} />
         <AuthRoute permission='0' exact path='/cart' render={(props) => <Main {...props} content={Cart} />} />

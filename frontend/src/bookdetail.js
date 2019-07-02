@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { message, Typography, Row, Col, InputNumber, Button } from 'antd';
+import { message, Typography, Row, Col, InputNumber, Button, Empty } from 'antd';
 import axios from 'axios';
 import Qs from 'qs';
 
@@ -73,10 +73,28 @@ class BookDetail extends Component {
     }
 
     render() {
+        let operation;
+        if (sessionStorage.getItem('userPermission') !== '1')
+            operation = (
+                <div style={{ display: 'inline' }}>
+                    <Row style={{ marginTop: '10px' }}>
+                        <Text style={{ marginRight: '10px' }}>Amount: </Text>
+                        <InputNumber id='amount' min={1} max={this.state.bookAmount} defaultValue={1} onChange={this.onAmountChange} />
+                        <Text style={{ marginLeft: '20px' }}>Stock: {this.state.bookAmount}</Text>
+                    </Row>
+                    <Row style={{ marginTop: '20px' }}>
+                        <Button size='large' onClick={this.addCart}>Add to cart</Button>
+                    </Row>
+                </div>
+            );
+
         return (
             <Row>
                 <Col span={6} className='book-detail-img' style={{ height: '350px' }}>
-                    <img alt='cover' src={'/image/' + this.state.bookImg} style={{ height: '100%' }} />
+                    {
+                        this.state.bookImg ? <img alt='cover' src={'/image/' + this.state.bookImg} style={{ height: '350px', width: '100%' }} />
+                            : <Empty />
+                    }
                 </Col>
                 <Col span={18} className='book-detail-info'>
                     <div style={{ height: '180px' }}>
@@ -96,14 +114,7 @@ class BookDetail extends Component {
                         <Row style={{ paddingTop: '10px' }}>
                             <Text className='book-price'>&yen; {(this.state.bookPrice / 100 * this.state.buyAmount).toFixed(2)}</Text>
                         </Row>
-                        <Row style={{ marginTop: '10px' }}>
-                            <Text style={{ marginRight: '10px' }}>Amount: </Text>
-                            <InputNumber id='amount' min={1} max={this.state.bookAmount} defaultValue={1} onChange={this.onAmountChange} />
-                            <Text style={{ marginLeft: '20px' }}>Stock: {this.state.bookAmount}</Text>
-                        </Row>
-                        <Row style={{ marginTop: '20px' }}>
-                            <Button size='large' onClick={this.addCart}>Add to cart</Button>
-                        </Row>
+                        {operation}
                     </div>
                 </Col>
             </Row>

@@ -64,6 +64,22 @@ public class OrderServiceImpl implements IOrderService {
         return ret;
     }
 
+    @Override
+    public List findAll() {
+        List<Object[]> res = order.findAllOrder();
+        List<Object> ret = new ArrayList<>();
+        for (Object[] i : res) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("userName", i[0]);
+            map.put("orderId", i[1]);
+            map.put("orderStatus", i[2]);
+            map.put("orderTime", i[3]);
+            map.put("orderPrice", i[4]);
+            ret.add(map);
+        }
+        return ret;
+    }
+
     @Transactional
     @Override
     public int addOrder(int userId, List<Integer> cartList) {
